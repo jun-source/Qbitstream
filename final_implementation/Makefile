@@ -1,0 +1,31 @@
+CC=/usr/bin/gcc
+LDFLAGS=-lcrypto -Intru_kem/ -Iaes_gcm/ -Idilithium3_aes/
+
+SOURCES = client.c \
+	aes_gcm/aes_gcm.c \
+	ntru_kem/crypto_sort.c ntru_kem/fips202_ntru.c ntru_kem/kem.c ntru_kem/owcpa.c \
+	ntru_kem/pack3.c ntru_kem/packq.c ntru_kem/poly.c ntru_kem/sample.c \
+	ntru_kem/verify.c ntru_kem/rng.c \
+	dilithium3_aes/aes256ctr.c dilithium3_aes/fips202.c dilithium3_aes/ntt.c \
+	dilithium3_aes/packing.c dilithium3_aes/poly.c dilithium3_aes/polyvec.c \
+	dilithium3_aes/reduce.c dilithium3_aes/rounding.c dilithium3_aes/sign.c \
+	dilithium3_aes/symmetric-aes.c dilithium3_aes/symmetric-shake.c
+#	dilithium3_aes/rng.c Seems to me file may have same name, but functions not in different directories
+HEADERS = aes_gcm/aes_gcm.h \
+	ntru_kem/api.h ntru_kem/crypto_sort.h ntru_kem/fips202_ntru.h ntru_kem/kem.h \
+	ntru_kem/poly.h ntru_kem/owcpa.h ntru_kem/params_ntru.h ntru_kem/sample.h \
+	ntru_kem/verify.h ntru_kem/rng.h \
+	dilithium3_aes/api_dil.h dilithium3_aes/config.h dilithium3_aes/fips202.h \
+	dilithium3_aes/ntt.h dilithium3_aes/packing.h dilithium3_aes/params.h \
+	dilithium3_aes/poly.h dilithium3_aes/polyvec.h dilithium3_aes/reduce.h \
+	dilithium3_aes/rounding.h dilithium3_aes/sign.h dilithium3_aes/symmetric.h 
+#	dilithium3_aes/rng.h
+
+client: $(HEADERS) $(SOURCES)
+	$(CC) -o $@ $(SOURCES) $(LDFLAGS)
+
+.PHONY: clean
+
+clean:
+	-rm client
+
