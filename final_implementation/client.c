@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
 	}	
 	fclose(fp);
 	
-	/* Generate random message */
+	/* Generat random message */
 	RAND_bytes(random_challg, RANDOM_CHALLENGE_SIZE);
 	mlen = RANDOM_CHALLENGE_SIZE;
 	sm = (unsigned char *) calloc(SECRET_MSG_SIZE, sizeof(unsigned char));
