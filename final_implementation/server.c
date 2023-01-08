@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 	unsigned char random_challg[RANDOM_CHALLENGE_SIZE]; //THINK THROUGHLY ABOUT SIZE OF MESSAGE, CURRENT CHOSEN ARBITRARY
 	unsigned char *sm, *m;
 	unsigned long long mlen, smlen;
-	unsigned char pk_ds[CRYPTO_SECRETKEYBYTES];
+	unsigned char pk_ds[CRYPTO_PUBLICKEYBYTES];
 	int ret_val;
 	
 	/* Key exchange parameters */
