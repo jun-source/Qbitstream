@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 		error("[socket 1] Error writing to socket");
 	}
 	
-	/* Socket 2: wait for signature acknowledge */
+	/* Socket 2: wait for server authentication */
 	bzero(buffer_in, BUFFER_IN_SIZE);
 	acum = 0;
     while((n = read(sockfd, buffer_in + acum, BUFFER_IN_SIZE)) < 0){ 
