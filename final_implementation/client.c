@@ -20,7 +20,7 @@
 #define BUFFER_OUT_SIZE 1025
 /* Digital signature */
 #define RANDOM_CHALLENGE_SIZE 48
-#define SECRET_MSG_SIZE CRYPTO_BYTES + RANDOM_CHALLENGE_SIZE
+#define SECRET_MSG_SIZE (CRYPTO_BYTES + RANDOM_CHALLENGE_SIZE)
 /* AES */
 #define AAD_SIZE 16
 #define IV_SIZE 16
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     struct hostent *server;
 	
 	// Digital signature parameters
-	unsigned char random_challg[RANDOM_CHALLENGE_SIZE]; //THINK THROUGHLY ABOUT SIZE OF MESSAGE, CURRENT CHOSEN ARBITRARY
+	unsigned char random_challg[RANDOM_CHALLENGE_SIZE];
 	unsigned char *sm;
 	unsigned long long mlen, smlen;
 	unsigned char sk_ds[CRYPTO_SECRETKEYBYTES];
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	unsigned char tag[TAG_SIZE];
 	unsigned char iv[IV_SIZE];
 	unsigned char aad[AAD_SIZE]="abcdefghijklmnop";	//dummy
-	int nEncrypted; //Substituo by nEncrypted
+	int nEncrypted;
 	
 	// Buffers and others
 	unsigned char buffer_in[BUFFER_IN_SIZE], buffer_out[BUFFER_OUT_SIZE];
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
     }
 	
 	/* 
-	 * TCP synchronization 
+	 * STEP 1: TCP synchronization 
 	 */
 	 
     portno = atoi(argv[2]);
@@ -102,7 +102,7 @@ int main(int argc, char *argv[])
 	}
 	
 	/* 
-	 * Authentication 
+	 * STEP 2: Authentication 
 	 */
 	 
 	printf("Starting authentication...\n"); 
@@ -147,8 +147,9 @@ int main(int argc, char *argv[])
 	free(sm);
 	
 	/* 
-	 * Key exchange 
+	 * STEP 3: Key exchange 
 	 */
+	 
 	printf("Starting key exchange...\n"); 
 	do{
 		printf("Do you want to update keypair for key exchange?[y/n] ");
@@ -210,7 +211,7 @@ int main(int argc, char *argv[])
 		fclose(fp);
 	}
 	
-	/* KEM encryption and AES key generation */
+	/* STEP 4: KEM encryption and AES key generation */
 	RAND_bytes(seed, sizeof(seed));
 	randombytes_init(seed, NULL, 256);
     crypto_kem_enc(cypher_key, aes_key, pk_kem);
@@ -309,7 +310,7 @@ int main(int argc, char *argv[])
 	printf("Data sent size: %d bytes\n", n);
 	free(message);
 	
-	/* Socket 10: wait for decryption sucess confirmation */	
+	/* Socket 10: wait for decryption success confirmation */	
 	bzero(buffer_in, BUFFER_IN_SIZE);
 	acum = 0;
     while((n = read(sockfd, buffer_in + acum, BUFFER_IN_SIZE)) > 0){ 
@@ -319,6 +320,10 @@ int main(int argc, char *argv[])
 		}
 	}
 	printf("%s\n", buffer_in);
+	
+	/*
+	 * STEP 5: FPGA reconfiguration
+     */
 	
 	/* Socket 11: wait for reconfiguration start confirmation */	
 	bzero(buffer_in, BUFFER_IN_SIZE);

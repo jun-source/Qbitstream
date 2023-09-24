@@ -18,7 +18,7 @@
 #define BUFFER_OUT_SIZE 1025
 /* Digital signature */
 #define RANDOM_CHALLENGE_SIZE 48
-#define SECRET_MSG_SIZE CRYPTO_BYTES + RANDOM_CHALLENGE_SIZE
+#define SECRET_MSG_SIZE (CRYPTO_BYTES + RANDOM_CHALLENGE_SIZE)
 /* AES */
 #define AAD_SIZE 16
 #define IV_SIZE 16
@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
     int n;
 	
 	/* Digital signature parameters */
-	unsigned char random_challg[RANDOM_CHALLENGE_SIZE]; //THINK THROUGHLY ABOUT SIZE OF MESSAGE, CURRENT CHOSEN ARBITRARY
+	unsigned char random_challg[RANDOM_CHALLENGE_SIZE];
 	unsigned char *sm, *m;
 	unsigned long long mlen, smlen;
 	unsigned char pk_ds[CRYPTO_PUBLICKEYBYTES];
@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 	unsigned char aes_key[AES_KEY_SIZE]; 
 	unsigned char tag[TAG_SIZE];
 	unsigned char iv[IV_SIZE];
-	unsigned char aad[AAD_SIZE];	//dummy
+	unsigned char aad[AAD_SIZE]; //dummy
 	int k;
 	
 	// Buffers and others
@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
     }
 		
 	/* 
-	 * TCP synchronization 
+	 * STEP 1: TCP synchronization 
 	 */
 	 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
     }
 	
 	/*
-	 * Authentication
+	 * STEP 2: Authentication
 	 */
 	
 	fp = fopen("keys/pk_dilith.bin", "r");
@@ -149,7 +149,7 @@ int main(int argc, char *argv[])
     }
 
     if(mlen != RANDOM_CHALLENGE_SIZE){
-        printf("crypto_sign_open returned bad 'mlen': Got <%llu>, expected <%llu>\n", mlen, RANDOM_CHALLENGE_SIZE);
+        printf("crypto_sign_open returned bad 'mlen': Got <%llu>, expected <%d>\n", mlen, RANDOM_CHALLENGE_SIZE);
 		free(m);
         free(sm);
 		bzero(buffer_out, BUFFER_OUT_SIZE);
@@ -188,10 +188,10 @@ int main(int argc, char *argv[])
 	printf("Authentication completed and succeeded\n");
 	 
 	/* 
-	 * Key exchange
+	 * STEP 3: Key exchange
 	 */
 	 
-	printf("Starting key exchange...\n"); 
+	printf("Starting key exchange...\n");
 	/* Socket 3: wait for kem keypair update request */
 	acum = 0;
 	while((n = read(newsockfd, buffer_in + acum, BUFFER_IN_SIZE)) > 0){
@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
 	printf("Key exchange succeeded\n");
 	
 	/* 
-	 * Application: bitstream decryption 
+	 * STEP 4: Application: bitstream decryption 
 	 */
 	
 	printf("Starting secure bitstream distribution...\n");
@@ -357,10 +357,9 @@ int main(int argc, char *argv[])
 	}	
     fclose(fp);
 	
-
-	/* 
-	 * Reconfiguration NEED FOR AESTHETICS IMPROVMENT (TRY TO RECEIVE CONFIRMATION FROM TERM THAT RECONFIG EXECUTED)
-	 */
+	/*
+	 * STEP 5: FPGA reconfiguration
+     */
 	
 	printf("Starting reconfiguration...\n");
 	
