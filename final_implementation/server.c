@@ -275,7 +275,7 @@ int main(int argc, char *argv[])
 	printf("Key exchange succeeded\n");
 	
 	/* 
-	 * STEP 4: Application: bitstream decryption 
+	 * STEP 4: bitstream decryption 
 	 */
 	
 	printf("Starting secure bitstream distribution...\n");

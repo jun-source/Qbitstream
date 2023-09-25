@@ -211,7 +211,7 @@ int main(int argc, char *argv[])
 		fclose(fp);
 	}
 	
-	/* STEP 4: KEM encryption and AES key generation */
+	/* KEM encryption and AES key generation */
 	RAND_bytes(seed, sizeof(seed));
 	randombytes_init(seed, NULL, 256);
     crypto_kem_enc(cypher_key, aes_key, pk_kem);
@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
 	printf("%s\n", buffer_in);
 	
 	/* 
-	 * Application: bitstream encryption 
+	 * STEP 4: bitstream encryption 
 	 */
 	
 	printf("Starting secure bitstream distribution...\n");
