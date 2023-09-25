@@ -233,7 +233,7 @@ int main(int argc, char *argv[])
 	printf("%s\n", buffer_in);
 	
 	/* 
-	 * STEP 4: bitstream encryption 
+	 * STEP 4: bitstream encryption and transmission
 	 */
 	
 	printf("Starting secure bitstream distribution...\n");
