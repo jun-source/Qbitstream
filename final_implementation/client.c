@@ -221,7 +221,7 @@ int main(int argc, char *argv[])
 		error("ERROR writing to socket");
 	}
 	
-	/* Socket 6: waiting for kem sucess confirmation */
+	/* Socket 6: waiting for kem success confirmation */
 	acum = 0;
 	bzero(buffer_in, BUFFER_IN_SIZE);
 	while((n = read(sockfd, buffer_in + acum, BUFFER_IN_SIZE)) > 0){

@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     free(m);
 	free(sm);
 	
-	/* Socket 2: send confirm authentication sucess */
+	/* Socket 2: send confirm authentication success */
 	bzero(buffer_out, BUFFER_OUT_SIZE);
 	strcpy(buffer_out, "[from server] Authentication succeeded");
     if ((n = write(newsockfd, buffer_out, BUFFER_OUT_SIZE)) < 0){
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
 		error("[KEM] Key exchange failed!");
     }
 	
-	/* Socket 6: send confirmation about kem sucess */
+	/* Socket 6: send confirmation about kem success */
 	bzero(buffer_out, BUFFER_OUT_SIZE);
 	strcpy(buffer_out, "[from server] Key exchange succeeded");
 	if((n = write(newsockfd, buffer_out, BUFFER_OUT_SIZE)) < 0){
@@ -396,11 +396,11 @@ int main(int argc, char *argv[])
 		error("[reconfiguration] Command not executed");
 	}
 	
-	printf("Reconfiguration SUCESS!!\n");
+	printf("Reconfiguration SUCCESS!!\n");
 	
 	/* Socket 12: send reconfiguration succeeded */
 	bzero(buffer_out, BUFFER_OUT_SIZE);
-	strcpy(buffer_out, "[from server] Reconfiguration SUCESS!!");
+	strcpy(buffer_out, "[from server] Reconfiguration SUCCESS!!");
     if ((n = write(newsockfd, buffer_out, BUFFER_OUT_SIZE)) < 0){
         error("ERROR writing to socket");
     }
